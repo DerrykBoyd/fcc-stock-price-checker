@@ -29,21 +29,21 @@ suite('Functional Tests', function() {
         });
       });
       
-      test('1 stock with like', function(done) {
+      // test('1 stock with like', function(done) {
         
-      });
+      // });
       
-      test('1 stock with like again (ensure likes arent double counted)', function(done) {
+      // test('1 stock with like again (ensure likes arent double counted)', function(done) {
         
-      });
+      // });
       
-      test('2 stocks', function(done) {
+      // test('2 stocks', function(done) {
         
-      });
+      // });
       
-      test('2 stocks with like', function(done) {
+      // test('2 stocks with like', function(done) {
         
-      });
+      // });
       
     });
 
