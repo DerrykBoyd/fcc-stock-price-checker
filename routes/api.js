@@ -48,8 +48,8 @@ module.exports = function (app) {
         if (err) console.log('Failed to connect to db' + err);
         else console.log('Connected to DB');
         let collection = db.collection(COLLECTION_NAME);
-        console.log(req.query);
-        console.log(req.ip);
+        // console.log(req.query);
+        // console.log(req.ip);
         let ticker = req.query.stock;
         let ip = req.ip;
         let stockData = {};
@@ -57,29 +57,33 @@ module.exports = function (app) {
         if (Array.isArray(ticker)) {
           let likes = [];
           for (let tick in ticker) {
-            if (req.query.like) await addLike(ticker[tick], ip, collection);
-            likes[tick] = await getLikes(ticker[tick], collection);
-            await getStockPrice(ticker[tick]).then(body => {
+            let upperTick = ticker[tick].toUpperCase();
+            if (req.query.like) await addLike(upperTick, ip, collection);
+            likes[tick] = await getLikes(upperTick, collection);
+            await getStockPrice(upperTick).then(body => {
               results.push({
-                stock: ticker[tick],
+                stock: upperTick,
                 price: body.toString(),
               })
             })
           }
-          console.log(likes);
+          // console.log(likes);
           results[0].rel_likes = likes[0] - likes[1];
           results[1].rel_likes = likes[1] - likes[0];
           stockData.stockData = results;
           res.send(stockData);
         } else {
-          if (req.query.like) await addLike(ticker, ip, collection);
-          getStockPrice(ticker).then(body => {
-            getLikes(ticker, collection).then(likes => {
-              console.log(likes);
+          let upperTick = ticker.toUpperCase()
+          if (req.query.like) await addLike(upperTick, ip, collection);
+          getStockPrice(upperTick).then(body => {
+            getLikes(upperTick, collection).then(likes => {
+              // console.log(likes);
               res.send({
-                stock: ticker,
-                price: body.toString(),
-                likes: likes
+                stockData: {
+                  stock: upperTick,
+                  price: body.toString(),
+                  likes: likes
+                }
               })
             })
           });
